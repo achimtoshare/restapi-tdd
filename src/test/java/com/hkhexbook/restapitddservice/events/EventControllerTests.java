@@ -46,6 +46,7 @@ public class EventControllerTests {
                 .description("REST API with spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2023,3, 15, 16, 15))
                 .closeEnrollmentDateTime(LocalDateTime.of(2023,3, 16, 16, 15))
+                .beginEventDateTime(LocalDateTime.of(2023,3, 16, 16, 15))
                 .endEventDateTime(LocalDateTime.of(2023,3, 17, 23, 15))
                 .basePrice(100)
                 .maxPrice(200)
@@ -64,9 +65,14 @@ public class EventControllerTests {
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE,MediaTypes.HAL_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("id").value(Matchers.not(100)))
-                .andExpect(jsonPath("free").value(Matchers.not(true)))
+                .andExpect(jsonPath("offline").value(true))
+                .andExpect(jsonPath("free").value(false))
+
+
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-events").exists())
+                .andExpect(jsonPath("_links.update-events").exists())
                 ;
     }
 
@@ -124,12 +130,15 @@ public class EventControllerTests {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("강남역")
-
                 .build();
 
         this.mockMvc.perform(post("/api/events")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(this.objectMapper.writeValueAsString(eventDto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].defaultMessage").exists())
+                .andExpect(jsonPath("$[0].code").exists())
+        ;
     }
 }
