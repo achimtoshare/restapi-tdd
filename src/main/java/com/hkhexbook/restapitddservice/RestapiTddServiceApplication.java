@@ -12,9 +12,4 @@ public class RestapiTddServiceApplication {
         SpringApplication.run(RestapiTddServiceApplication.class, args);
     }
 
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
-
 }

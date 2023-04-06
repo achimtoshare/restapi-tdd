@@ -28,4 +28,6 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+      springfamework:
+              security: DEBUG
 
