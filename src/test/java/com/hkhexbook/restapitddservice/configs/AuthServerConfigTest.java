@@ -1,17 +1,14 @@
 package com.hkhexbook.restapitddservice.configs;
 
-import com.hkhexbook.restapitddservice.accounts.Account;
 import com.hkhexbook.restapitddservice.accounts.AccountRepository;
-import com.hkhexbook.restapitddservice.accounts.AccountRole;
 import com.hkhexbook.restapitddservice.accounts.AccountService;
 import com.hkhexbook.restapitddservice.common.AppProperties;
-import com.hkhexbook.restapitddservice.common.BaseControllerTest;
+import com.hkhexbook.restapitddservice.common.BaseTest;
 import com.hkhexbook.restapitddservice.common.TestDescription;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Set;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class AuthServerConfigTest extends BaseControllerTest {
+public class AuthServerConfigTest extends BaseTest {
 
     @Autowired
     AccountService accountService;
@@ -38,7 +35,7 @@ public class AuthServerConfigTest extends BaseControllerTest {
 
 
     @Test
-    @TestDescription("인증 토큰을 발급 받는 테스트")
+    @DisplayName("인증 토큰을 발급 받는 테스트")
     public void getAuthToken() throws Exception {
 // 이미 어플리케이션 실행할때 admin, user 유저 생성해주기때문. 필요없음.
 //        Account hkh = Account.builder()

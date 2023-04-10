@@ -1,13 +1,11 @@
 package com.hkhexbook.restapitddservice.events;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceSupport;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
-public class EventResource extends Resource<Event> {
+public class EventResource extends EntityModel<Event> {
 
    public EventResource(Event event, Link... links) {
         super(event, links);

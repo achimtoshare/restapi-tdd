@@ -1,9 +1,10 @@
 package com.hkhexbook.restapitddservice.accounts;
 
+import com.hkhexbook.restapitddservice.common.BaseTest;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,12 @@ import java.util.regex.Matcher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
-public class AccountServiceTest {
+public class AccountServiceTest extends BaseTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+
 
     @Autowired
     AccountService accountService;
@@ -43,8 +41,8 @@ public class AccountServiceTest {
     public void findByUsername(){
 
 
-        String password = "1234";
-        String username = "hkh@email.com";
+        String password = "1111";
+        String username = "admin2@email.com";
         Account account = Account.builder()
                 .email(username)
                 .password(password)
@@ -63,13 +61,9 @@ public class AccountServiceTest {
 
     @Test
     public void findByUsernameFail(){
-        //예상이기대문에 어떤 에러날지 먼저 적어주어야한다.
-        String username = "random@email.com";
-        expectedException.expect(UsernameNotFoundException.class);
-        expectedException.expectMessage(Matchers.containsString(username));
-
-        //When
-        accountService.loadUserByUsername(username);
+        assertThrows(UsernameNotFoundException.class, ()->{
+            accountService.loadUserByUsername("random@email.com");
+        });
 
     }
 
