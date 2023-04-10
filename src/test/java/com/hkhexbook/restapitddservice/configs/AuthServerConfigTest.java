@@ -4,6 +4,7 @@ import com.hkhexbook.restapitddservice.accounts.Account;
 import com.hkhexbook.restapitddservice.accounts.AccountRepository;
 import com.hkhexbook.restapitddservice.accounts.AccountRole;
 import com.hkhexbook.restapitddservice.accounts.AccountService;
+import com.hkhexbook.restapitddservice.common.AppProperties;
 import com.hkhexbook.restapitddservice.common.BaseControllerTest;
 import com.hkhexbook.restapitddservice.common.TestDescription;
 import org.junit.Before;
@@ -27,6 +28,9 @@ public class AuthServerConfigTest extends BaseControllerTest {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Before
     public void setUp(){
         this.accountRepository.deleteAll();
@@ -36,23 +40,21 @@ public class AuthServerConfigTest extends BaseControllerTest {
     @Test
     @TestDescription("인증 토큰을 발급 받는 테스트")
     public void getAuthToken() throws Exception {
-        String username = "hkh@email.com";
-        String password = "1234";
-        Account hkh = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                .build();
+// 이미 어플리케이션 실행할때 admin, user 유저 생성해주기때문. 필요없음.
+//        Account hkh = Account.builder()
+//                .email(appProperties.getUserUsername())
+//                .password(appProperties.getUserPassword())
+//                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+//                .build();
+//
+//        this.accountService.saveAccount(hkh);
 
-        this.accountService.saveAccount(hkh);
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
 
         this.mockMvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId,clientSecret))
-                .param("username",username)
-                .param("password",password)
+                .with(httpBasic(appProperties.getClientId(),appProperties.getClientSecret()))
+                .param("username",appProperties.getUserUsername())
+                .param("password",appProperties.getUserPassword())
                 .param("grant_type","password"))
                 .andDo(print())
                 .andExpect(status().isOk())

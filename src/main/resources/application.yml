@@ -31,3 +31,10 @@ logging:
       springfamework:
               security: DEBUG
 
+my-app:
+  admin-password: admin
+  admin-username: admin@email.com
+  user-username: hkh@email.com
+  user-password: 1234
+  client-id: my-app
+  client-secret: pass
